@@ -1,0 +1,26 @@
+# kubectl run hydpod --image nginx --labels env=dev,tier=frontend,dc=hyd
+# kubectl run chnpod --image nginx --labels env=dev,tier=backend,dc=chn
+# kubectl run bngpod --image nginx --labels env=dev,tier=frontend,dc=bng
+# kubectl run mumpod --image nginx --labels env=tst,tier=fullstack,dc=mum
+# kubectl run ncrpod --image nginx --labels env=tst,tier=backend,dc=ncr
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-replicaset
+spec:
+  replicas: 3
+  selector:
+    matchExpressions:
+    - {key: env, operator: In, values: [dev, tst]}
+    - {key: tier, operator: NotIn, values: [backend, fullstack]}
+  template:
+    metadata:
+      labels:
+        env: dev
+        tier: frontend
+        dc: hyd
+    spec:
+      containers:
+      - image: nginx
+        name: nginx

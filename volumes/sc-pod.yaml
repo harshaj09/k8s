@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sc-pod
+spec:
+  containers:
+  - image: busybox
+    name: busybox
+    command: ['sh', '-c', 'while true; do echo Software!!! >> /output/file1.txt; sleep 20; done']
+    volumeMounts:
+    - name: my-vol
+      mountPath: /output/
+  volumes:
+  - name: my-vol
+    persistentVolumeClaim:
+      claimName: sc-pvc-gold
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sc-pod-default
+spec:
+  containers:
+  - image: busybox
+    name: busybox
+    command: ['sh', '-c', 'while true; do echo Hello!!! >> /output/file.txt; sleep 30; done']
+    volumeMounts:
+    - name: my-vol1
+      mountPath: /output/
+  volumes:
+  - name: my-vol1
+    persistentVolumeClaim:
+      claimName: sc-pvc

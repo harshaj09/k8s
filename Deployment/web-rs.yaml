@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: python-webapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: python
+  template:
+    metadata:
+      labels:
+        app: python
+    spec:
+      containers: 
+      - name: nginx
+        image: devopswithcloudhub/python_webpage:greencont
+        # image: devopswithcloudhub/python_webpage:bluecont

@@ -1,0 +1,28 @@
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority: /home/harsha/ca.crt
+    server: https://10.182.0.19:6443
+  name: dev-cluster
+contexts:
+- context:
+    user: harsha
+    cluster: dev-cluster
+  name: dev-context
+current-context: dev-context
+kind: Config
+preferences: {}
+users:
+- name: harsha
+  user:
+    client-certificate: /home/harsha/harsha.crt
+    client-key: /home/harsha/harsha.key
+
+# Generate private key, csr, and certificate
+# openssl genrsa -out harsha.key 2048
+# openssl req -new -key harsha.key -out harsha.csr -subj '/CN=Harsha/O=development'
+# openssl x509 -req -in harsha.csr -out harsha.crt -CA ca.crt -CAkey ca.key -CAcreateserial -days 60
+# kubectl config set-cluster dev-cluster --server=https://10.182.0.19:6443 --certificate-authority=/home/harsha/certs/ca.crt
+# kubectl config set-credentials harsha --client-certificate=/home/harsha/certs/harsha.crt --client-key=/home/harsha/certs/harsha.key
+# kubectl config set-context dev-context --user=harsha --cluster=dev-cluster
+# kubectl config use-context dev-context

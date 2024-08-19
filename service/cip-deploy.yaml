@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clusterip-deploy
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: catalog
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+  template:
+    metadata:
+      labels:
+        app: catalog
+    spec:
+      containers:
+      - image: devopswithcloudhub/python_webpage:blue
+        name: bluecont

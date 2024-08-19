@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: my-config
+data:
+  name: harsha
+  course: k8s
+  intro: | 
+    Hello Everyone!!
+    Welcome to DevOps Classes!
+    From Today classes will start!

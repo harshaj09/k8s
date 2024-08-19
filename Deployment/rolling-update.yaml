@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rolling-update
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: currency
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: currency
+    spec:
+      containers:
+      - image: devopswithcloudhub/python_webpage:greencont
+        name: greencont

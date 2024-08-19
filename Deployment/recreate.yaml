@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recreate
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: product
+  strategy: 
+    type: Recreate 
+  template:
+    metadata:
+      labels:
+        app: product
+    spec:
+      containers:
+      - image: devopswithcloudhub/python_webpage:greencont
+        name: greencont

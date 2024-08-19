@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: nginx-deploy
+spec:
+  replicas: 2
+  selector: 
+    matchExpressions:
+    - { key: app, operator: In, values: ['product'] }
+    - { key: app, operator: NotIn, values: ['cart'] }
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+  template:
+    metadata:
+      labels:
+        app: product
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+      nodeName: worker-1

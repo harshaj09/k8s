@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: cm-vol-pod
+spec:
+  containers:
+  - image: busybox
+    name: busybox
+    command: ['sh', '-c', 'cat /cong/course']
+    volumeMounts:
+    - name: my-cm-vol
+      mountPath: /cong
+  volumes:
+  - name: my-cm-vol
+    configMap:
+      name: my-config

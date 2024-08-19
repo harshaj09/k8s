@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: new-pvc-deploy
+spec:
+  replicas: 4
+  selector: 
+    matchLabels:
+      app: catalog
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: catalog
+    spec:
+      containers:
+      - image: busybox
+        name: busybox
+        command: ['sh', '-c', 'while true; do echo Happy Learning!!! >> /linux/abc.txt; sleep 30; done']
+        volumeMounts:
+        - name: my-vol1
+          mountPath: /linux
+      volumes:
+      - name: my-vol1
+        persistentVolumeClaim:
+          claimName: pvc

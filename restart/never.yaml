@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: never-pod
+spec:
+  containers:
+  - image: busybox
+    name: busybox
+    command: 
+    - 'sh'
+    - '-c'
+    - 'sleep 10 && randomadads'
+  restartPolicy: Never

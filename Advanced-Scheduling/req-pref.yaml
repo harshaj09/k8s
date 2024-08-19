@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: req-pref
+spec:
+  replicas: 4
+  selector:
+    matchExpressions:
+    - {key: app, operator: In, values: [product, catalog]}
+    - {key: app, operator: NotIn, values: [cart]}
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 2
+  template:
+    metadata:
+      labels: 
+        app: product
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: disktype
+                operator: In
+                values: 
+                - optical
+                - ssd
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 2
+            preference:
+              matchExpressions:
+              - key: env
+                operator: In
+                values: 
+                - dev
+                - test
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: dc
+                operator: In
+                values:
+                - hyd
+                - bang
+                - chn
+# worker1: 
+#   disktype: ssd
+#   env: dev
+#   dc: pune
+# worker-2:
+#   disktype: hdd
+#   env: test
+#   dc: chn
+# worker-3:
+#   disktype: optical
+#   env: prod
+#   dc: bang
